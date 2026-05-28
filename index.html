@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PAQu — Protein Isoform Abundance Quantification</title>
+  <meta name="description" content="PAQu: A Bayesian method for accurate protein isoform abundance quantification integrating transcriptomic and proteomic data." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="static/css/style.css" />
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav>
+  <div class="inner">
+    <span class="brand">PAQu</span>
+    <ul>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#citation">Citation</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="logo-wrap">
+    <img src="static/img/PAQu.png" alt="PAQu logo" />
+  </div>
+
+  <h1>Estimating Protein Isoform Abundances with PAQu</h1>
+
+  <p class="tagline">
+    A Bayesian supervised factor analysis method integrating transcriptomic and proteomic data
+    for accurate, uncertainty-aware protein isoform quantification.
+  </p>
+
+  <div>
+    <span class="venue-badge">
+      <!-- bioRxiv icon -->
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+      bioRxiv 2026
+    </span>
+  </div>
+
+  <p class="authors" style="margin-top:1.4rem;">
+    <a href="https://testalorenzo.github.io" target="_blank" rel="noopener">Lorenzo Testa</a><sup>a,b</sup>,
+    Lambertus Klei<sup>c</sup>,
+    Alesia Rengle<sup>d</sup>,
+    Anastasia Yocum<sup>e</sup>,
+    David A.&nbsp;Lewis<sup>c,f</sup>,
+    <a href="https://devlinbj.github.io/" target="_blank" rel="noopener">Bernie Devlin</a><sup>c</sup>,
+    <a href="https://kathrynmroeder.github.io/" target="_blank" rel="noopener">Kathryn Roeder</a><sup>a,g,*</sup>,
+    <a href="https://macdonaldlab.pitt.edu/Home.html" target="_blank" rel="noopener">Matthew L.&nbsp;MacDonald</a><sup>c,h,*</sup>
+  </p>
+
+  <p class="affiliations">
+    <sup>a</sup>Dept. of Statistics &amp; Data Science, Carnegie Mellon University &nbsp;&middot;&nbsp;
+    <sup>b</sup>L'EMbeDS, Sant'Anna School of Advanced Studies &nbsp;&middot;&nbsp;
+    <sup>c</sup>Dept. of Psychiatry, University of Pittsburgh &nbsp;&middot;&nbsp;
+    <sup>d</sup>Dept. of Statistics, University of Pittsburgh &nbsp;&middot;&nbsp;
+    <sup>e</sup>A2IDEA &nbsp;&middot;&nbsp;
+    <sup>f</sup>Center for Neuroscience, University of Pittsburgh &nbsp;&middot;&nbsp;
+    <sup>g</sup>Dept. of Computational Biology, Carnegie Mellon University &nbsp;&middot;&nbsp;
+    <sup>h</sup>Biomedical Mass Spectrometry Center, University of Pittsburgh
+  </p>
+
+  <div class="buttons">
+    <a class="btn btn-primary"
+       href="https://www.biorxiv.org/content/10.64898/2026.04.20.719668v1"
+       target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+      </svg>
+      Paper
+    </a>
+    <a class="btn btn-outline"
+       href="https://github.com/testalorenzo/PAQu"
+       target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.607.069-.607 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+      </svg>
+      GitHub
+    </a>
+    <a class="btn btn-outline" href="#citation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+      </svg>
+      Cite
+    </a>
+  </div>
+</header>
+
+<!-- ===== ABSTRACT ===== -->
+<section id="abstract">
+  <div class="container">
+    <h2 class="section-title">Abstract</h2>
+    <p class="abstract-text">
+      A single gene can encode multiple versions of a protein, dubbed isoforms, with varying functionality.
+      Cellular control of isoform abundances is critical for multiple aspects of biology and is only
+      partially regulated by transcript levels. While long-read sequencing facilitates transcript
+      quantification, quantifying the resulting protein isoforms on a large scale is a major challenge,
+      complicating biological interpretation of transcript alterations. Standard &ldquo;bottom-up&rdquo; mass
+      spectrometry can assess only short portions of isoforms called peptides, and these peptides often
+      map onto more than one isoform. We introduce <strong>PAQu</strong>, a novel Bayesian method that leverages
+      multiomic information from the peptidome and transcriptome to provide accurate estimates of isoform
+      abundance even when peptide mapping is ambiguous. PAQu offers several advantages over existing methods
+      in a unified framework: it provides uncertainty quantification, integrates multiomic information for
+      improved accuracy, and enables a rigorous framework for hypothesis testing. Extensive simulations show
+      that PAQu consistently outperforms competing methods in detecting differentially expressed protein
+      isoforms and estimating their abundances. We apply PAQu to investigate differences in isoform abundance
+      between people with schizophrenia and control subjects, confirming for the first time at the protein
+      level that C4A &mdash; but not C4B &mdash; isoform abundance is elevated in schizophrenia.
+    </p>
+  </div>
+</section>
+
+<!-- ===== METHOD ===== -->
+<section id="method">
+  <div class="container">
+    <h2 class="section-title">Method Overview</h2>
+
+    <p style="font-size:0.97rem; color:#3a3e28; line-height:1.85; margin-bottom:1.5rem;">
+      PAQu is a <strong>Bayesian supervised factor analysis</strong> method that models protein isoform
+      abundances as latent factors. It learns two key mappings simultaneously: from transcript expression
+      levels to protein isoform abundances, and from protein isoforms to peptide abundances. A binary
+      condition vector (e.g., diagnosis) is incorporated to enable differential abundance analysis.
+    </p>
+
+    <div class="fig-wrap">
+      <img src="static/img/figure1.png"
+           alt="Summary of the PAQu model: inputs are transcript matrix T, condition vector A, detectability mask M, and peptide matrix P; outputs are weights W, condition effects delta, and detectability scores Z." />
+      <p class="fig-caption">
+        <strong>Fig. 1 &mdash; Summary of the PAQu model.</strong>
+        The model takes as input a transcript expression matrix T, a condition binary vector A,
+        a detectability mask matrix M, and a peptide abundance matrix P. Outputs include the
+        transcript-to-isoform conversion weights W, the condition effects on isoform abundances D,
+        and the estimated peptide detectability scores Z.
+      </p>
+    </div>
+
+    <div class="callout">
+      <strong>Two-layer linear model.</strong>
+      In the first layer, transcript expression T is transformed into latent protein isoforms I via
+      a diagonal weight matrix W, with additive condition vector A.
+      In the second layer, peptide abundances P are modeled as the product of isoform abundances I
+      and detectability matrix Z. Posterior inference uses Gibbs sampling; differential abundance
+      significance is assessed via the <em>local false sign rate</em> (LFSR).
+    </div>
+  </div>
+</section>
+
+<!-- ===== CITATION ===== -->
+<section id="citation">
+  <div class="container">
+    <h2 class="section-title">Citation</h2>
+    <p style="font-size:0.9rem; color:#5a6045; margin-bottom:1rem;">
+      If you use PAQu in your research, please cite:
+    </p>
+    <div class="citation-block">
+      <button class="copy-btn" id="copy-bibtex">Copy</button>
+      <pre id="bibtex">@article{testa2026paqu,
+  title   = {Estimating protein isoform abundances with {PAQu}},
+  author  = {Testa, Lorenzo and Klei, Lambertus and Rengle, Alesia
+             and Yocum, Anastasia and Lewis, David A. and Devlin, Bernie
+             and Roeder, Kathryn and MacDonald, Matthew L.},
+  journal = {bioRxiv},
+  year    = {2026},
+  doi     = {10.64898/2026.04.20.719668},
+  url     = {https://www.biorxiv.org/content/10.64898/2026.04.20.719668v1}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>
+    <strong style="color:#a8b07a;">PAQu</strong> &mdash;
+    Protein isoform Abundance Quantification
+  </p>
+  <p style="margin-top:0.4rem;">
+    Code at <a href="https://github.com/testalorenzo/PAQu" target="_blank" rel="noopener">github.com/testalorenzo/PAQu</a>
+    &nbsp;&middot;&nbsp;
+    Preprint at <a href="https://www.biorxiv.org/content/10.64898/2026.04.20.719668v1" target="_blank" rel="noopener">bioRxiv</a>
+    &nbsp;&middot;&nbsp;
+    <a href="mailto:lorenzo@stat.cmu.edu">Contact</a>
+  </p>
+  <p style="margin-top:0.6rem; font-size:0.75rem; color:#475569;">
+    Department of Statistics &amp; Data Science, Carnegie Mellon University &nbsp;|&nbsp;
+    Department of Psychiatry, University of Pittsburgh
+  </p>
+</footer>
+
+<script src="static/js/main.js"></script>
+</body>
+</html>
